@@ -2,20 +2,19 @@
     "configurations": [
         {
             "name": "ESP32",
-            "includePath": [
-                "${workspaceRoot}",
-                "${workspaceRoot}/components",
+            "includePath": [                
                 "${IDF_PATH}/components",
-                "${XTENSA_ESP32_ELF_PATH}/xtensa-esp32-elf/include"
+                "${XTENSA_ESP32_ELF_PATH}/xtensa-esp32-elf/include",
+                "${workspaceRoot}"
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": "",
                 "path": [
-                    "${workspaceRoot}",
-                    "${workspaceRoot}/components",
                     "${IDF_PATH}/components",
-                    "${XTENSA_ESP32_ELF_PATH}/xtensa-esp32-elf/include"
+                    "${XTENSA_ESP32_ELF_PATH}/xtensa-esp32-elf/include",
+                    "${workspaceRoot}",
+                    "/Users/andri/Projects/esp32/esp-idf-projects/espectro32-newyear/components"
                 ]
             },
             "intelliSenseMode": "clang-x64"
