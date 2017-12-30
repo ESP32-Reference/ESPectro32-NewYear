@@ -5,8 +5,9 @@
 #include "Arduino.h"
 
 const static char *TAG ="APP";
-const static char *DEFAULT_WIFI_SSID = "DyWare-AP3";
-const static char *DEFAULT_WIFI_PASSWORD = "p@ssw0rd";
+const static char *DEFAULT_WIFI_SSID = "YOUR_SSID_NAME";
+const static char *DEFAULT_WIFI_PASSWORD = "YOUR_SSID_PASS";
+const static char *FILENAME = "/WAV/DOWNLOAD.WAV";
 
 #define HTTP_DOWNLOAD_DEBUG_PRINT(...)  ESP_LOGI("HTTP", __VA_ARGS__);
 
@@ -29,7 +30,6 @@ extern "C" {
 	#include "esp_request.h"
 	void app_main(void);
 }
-
 
 WiFiManager wifiMgr;
 
@@ -63,7 +63,7 @@ int download_callback(request_t *req, char *data, int len) {
 			}
 
 			//Begin download
-			downloadedFile = fs.open("/WAV/DOWNLOAD.WAV", FILE_WRITE);
+			downloadedFile = fs.open(FILENAME, FILE_WRITE);
 			if (!downloadedFile) {
 				HTTP_DOWNLOAD_DEBUG_PRINT("Failed to open file for writing");
 				return -1;
@@ -120,17 +120,18 @@ void app_main(void)
 
 	ESPectro32_LedMatrix_Animation downloadAnim = ESPectro32_LedMatrix_Animation::startDownloadAnimation();
 
+	//Preparing HTTP client
 	request_t *req;
 	int status;
 	//req = req_new("http://music.albertarose.org/christmas/lyrics/music/AlvinAndTheChipmunks_WeWishYouAMerryChristmas.wav");
 	req = req_new("http://andriyadi.me/wp-content/uploads/2017/12/We_Wish_You_A_Merry_Christmas_The_Chipmunks_.wav");
-	//req->context = pvParameter;
-
+	
 	req_setopt(req, REQ_SET_HEADER, "User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36");
 	req_setopt(req, REQ_FUNC_DOWNLOAD_CB, download_callback);
 	status = req_perform(req);
 	req_clean(req);
 
+	//If file downloading is success
 	if (status) {
 
 		downloadAnim.stop();
@@ -150,7 +151,7 @@ void app_main(void)
 		AudioPlayer *player = new AudioPlayer();
 		player->begin(SD, &pin_config);
 
-		player->playAsync("/WAV/DOWNLOAD.WAV");
+		player->playAsync(FILENAME);
 	}
 }
 
