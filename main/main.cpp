@@ -57,7 +57,7 @@ int download_callback(request_t *req, char *data, int len) {
 			found = req_list_get_key(req->response->header, "Content-Length");
 			if(found) {
 				HTTP_DOWNLOAD_DEBUG_PRINT("Binary len=%s", (char*)found->value);
-				binary_len = atoi(found->value);
+				binary_len = atoi((const char*)found->value);
 				remain_len = binary_len;
 			} else {
 				HTTP_DOWNLOAD_DEBUG_PRINT("Error get content length");

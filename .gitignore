@@ -8,3 +8,5 @@ _backup/
 .settings/
 spiffs_files/
 .vscode/
+.idea/
+cmake-build-debug/
