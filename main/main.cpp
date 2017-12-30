@@ -5,12 +5,14 @@
 #include "Arduino.h"
 
 const static char *TAG ="APP";
-const static char *DEFAULT_WIFI_SSID = "YOUR_SSID_NAME";
-const static char *DEFAULT_WIFI_PASSWORD = "YOUR_SSID_PASS";
+const static char *DEFAULT_WIFI_SSID = "DyWare-AP3";
+const static char *DEFAULT_WIFI_PASSWORD = "p@ssw0rd";
 const static char *FILENAME = "/WAV/DOWNLOAD.WAV";
+const static char *SONG_URL = "http://andriyadi.me/wp-content/uploads/2017/12/We_Wish_You_A_Merry_Christmas_The_Chipmunks_.wav"; //"http://music.albertarose.org/christmas/lyrics/music/AlvinAndTheChipmunks_WeWishYouAMerryChristmas.wav"
 
 #define HTTP_DOWNLOAD_DEBUG_PRINT(...)  ESP_LOGI("HTTP", __VA_ARGS__);
 
+//Song playing icon to display on LED Matrix
 static const uint8_t PROGMEM LED_PLAYING_SONG[] =
 { B00011110,
   B00110010,
@@ -80,15 +82,17 @@ int download_callback(request_t *req, char *data, int len) {
 
 		remain_len -= len;
 
-		//finish
+		//Download is finished
 		if(remain_len == 0) {
 			HTTP_DOWNLOAD_DEBUG_PRINT("Download callback is finished");
-			downloadedFile.close();
+			downloadedFile.close(); //Close the file
 		}
 
+		//Return success
 		return 0;
 	}
 
+	//Return failed
 	return -1;
 }
 
@@ -113,9 +117,14 @@ void app_main(void)
 	//Actually start WiFiManager
 	wifiMgr.start();
 
+	//This will block until connected or timeout
 	if (wifiMgr.waitForConnection()) {
 		ledMatrixAnim.stop();
 		ESPectro32.LedMatrix().displayFrame(2);
+	}
+	else {
+		//If not succeed or timeout, just return
+		return;
 	}
 
 	ESPectro32_LedMatrix_Animation downloadAnim = ESPectro32_LedMatrix_Animation::startDownloadAnimation();
@@ -123,8 +132,7 @@ void app_main(void)
 	//Preparing HTTP client
 	request_t *req;
 	int status;
-	//req = req_new("http://music.albertarose.org/christmas/lyrics/music/AlvinAndTheChipmunks_WeWishYouAMerryChristmas.wav");
-	req = req_new("http://andriyadi.me/wp-content/uploads/2017/12/We_Wish_You_A_Merry_Christmas_The_Chipmunks_.wav");
+	req = req_new(SONG_URL);
 	
 	req_setopt(req, REQ_SET_HEADER, "User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36");
 	req_setopt(req, REQ_FUNC_DOWNLOAD_CB, download_callback);

@@ -13,6 +13,7 @@ ESPectro32 is an IoT development board based-on ESP32 MCU, made by DycodeX. You 
 * Clone this repo
 * Update submodules which this project depends on: git submodule update --init --recursive
 * There's a symbolic link arduino-esp32. It's a Arduino-compatible framework for ESP32. You can clone it from [here](https://github.com/espressif/arduino-esp32). Change (recreate) the symbolic link to point to your local arduino-esp32 folder.
+* In the [main.cpp](https://github.com/dycodex/ESPectro32-NewYear/blob/master/main/main.cpp) file, change some constants to fit your need. 
 * Via Terminal/Console, on current directory, try to type `make`. Fingers crossed :)
 
 

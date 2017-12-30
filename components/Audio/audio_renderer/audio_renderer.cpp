@@ -281,7 +281,7 @@ i2s_bits_per_sample_t Renderer::getBitDepth() const
 
 Renderer::Renderer(i2s_pin_config_t *pin_config): i2s_pin_config(pin_config)
 {
-	printf("Data out pin: %d\n", i2s_pin_config->data_out_num);
+	//printf("Data out pin: %d\n", i2s_pin_config->data_out_num);
 
     bit_depth = I2S_BITS_PER_SAMPLE_16BIT;
     i2s_num = I2S_NUM_0;  
