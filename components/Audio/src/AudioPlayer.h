@@ -20,6 +20,9 @@
 
 class AudioPlayer: public Task {
 public:
+
+	typedef std::function<void()> AudioPlayerCallback;
+
 	AudioPlayer();
 	virtual ~AudioPlayer();
 
@@ -30,8 +33,11 @@ public:
 	void run();
 	void runAsync(void *data);
 	void stop();
-
+	void onStopped(AudioPlayerCallback cb) {
+		stoppedCallback_ = cb;
+	}
 private:
+	AudioPlayerCallback stoppedCallback_ = NULL;
 	fs::FS &audioFS_ = SD;
 	Renderer *audioRenderer_ = NULL;
 	//i2s_pin_config_t *i2s_pin_config_ = NULL;

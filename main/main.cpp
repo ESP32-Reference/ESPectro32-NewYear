@@ -5,8 +5,8 @@
 #include "Arduino.h"
 
 const static char *TAG ="APP";
-const static char *DEFAULT_WIFI_SSID = "DyWare-AP3";
-const static char *DEFAULT_WIFI_PASSWORD = "p@ssw0rd";
+const static char *DEFAULT_WIFI_SSID = "[YOUR_SSID_NAME]";
+const static char *DEFAULT_WIFI_PASSWORD = "[YOUR_SSID_PASS]";
 const static char *FILENAME = "/WAV/DOWNLOAD.WAV";
 const static char *SONG_URL = "http://andriyadi.me/wp-content/uploads/2017/12/We_Wish_You_A_Merry_Christmas_The_Chipmunks_.wav"; //"http://music.albertarose.org/christmas/lyrics/music/AlvinAndTheChipmunks_WeWishYouAMerryChristmas.wav"
 
@@ -149,14 +149,23 @@ void app_main(void)
 
 		HTTP_DOWNLOAD_DEBUG_PRINT("File is downloaded");
 
+		ESPectro32_LedMatrix_ScrollTextAnimation *ledMatrixTextAnim = new ESPectro32_LedMatrix_ScrollTextAnimation();
+		ledMatrixTextAnim->setLedMatrix(ESPectro32.LedMatrix());
+
 		//Preparing AudioPlayer a.k.a WAVE Player
+
+		//Adjust the I2S pins assigment
 		i2s_pin_config_t pin_config;
 		pin_config.bck_io_num = GPIO_NUM_26;
 		pin_config.ws_io_num = GPIO_NUM_25;
 		pin_config.data_out_num = GPIO_NUM_32;
 		pin_config.data_in_num = I2S_PIN_NO_CHANGE;
-
+		
 		AudioPlayer *player = new AudioPlayer();
+		player->onStopped([ledMatrixTextAnim]() {
+			ESP_LOGI(TAG, "Audio Player stopped");
+			ledMatrixTextAnim->scrollText("Happy New Year 2018!", 8000);
+		});
 		player->begin(SD, &pin_config);
 
 		player->playAsync(FILENAME);

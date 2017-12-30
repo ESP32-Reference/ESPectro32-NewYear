@@ -2,19 +2,43 @@
     "configurations": [
         {
             "name": "ESP32",
-            "includePath": [     
+            "includePath": [
                 ".",
-                "${workspaceRoot}",           
                 "${IDF_PATH}/components",
+                "${workspaceRoot}/components/arduino-esp32",
+                "${workspaceRoot}/components/ESPectro32/lib/Adafruit_IS31FL3731", 
+                "${workspaceRoot}/components/ESPectro32/lib/Adafruit_GFX",  
+                "${workspaceRoot}/components/ESPectro32/lib/Commons",  
+                "${workspaceRoot}/components/ESPectro32/lib/FreeRTOS-Wrapper",
+                "${workspaceRoot}/components/ESPectro32/lib/Network",
+                "${workspaceRoot}/components/ESPectro32/lib/WS281x",  
+                "${workspaceRoot}/components/ESPectro32/src", 
+                "${workspaceRoot}/components/Audio/audio_renderer",    
+                "${workspaceRoot}/components/Audio/src",       
+                "${workspaceRoot}/components/esp-request",             
                 "${XTENSA_ESP32_ELF_PATH}/xtensa-esp32-elf/include"
             ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE"
+            ],
             "browse": {
-                "limitSymbolsToIncludedHeaders": false,
+                "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": "",
                 "path": [
                     ".",
-                    "${workspaceRoot}",
                     "${IDF_PATH}/components",
+                    "${workspaceRoot}/components/arduino-esp32",
+                    "${workspaceRoot}/components/ESPectro32/lib/Adafruit_IS31FL3731", 
+                    "${workspaceRoot}/components/ESPectro32/lib/Adafruit_GFX",  
+                    "${workspaceRoot}/components/ESPectro32/lib/Commons",  
+                    "${workspaceRoot}/components/ESPectro32/lib/FreeRTOS-Wrapper",
+                    "${workspaceRoot}/components/ESPectro32/lib/Network",
+                    "${workspaceRoot}/components/ESPectro32/lib/WS281x",  
+                    "${workspaceRoot}/components/ESPectro32/src", 
+                    "${workspaceRoot}/components/Audio/audio_renderer",    
+                    "${workspaceRoot}/components/Audio/src",       
+                    "${workspaceRoot}/components/esp-request",             
                     "${XTENSA_ESP32_ELF_PATH}/xtensa-esp32-elf/include"
                 ]
             },

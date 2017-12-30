@@ -63,20 +63,18 @@ void AudioPlayer::runAsync(void* data) {
 	File f;
 	wav_header_t header;
 
-		f = WavFile::openWavFile(audioFS_, path, FILE_READ);
+	f = WavFile::openWavFile(audioFS_, path, FILE_READ);
 
+	std::vector<wav_chunk_t> chunks;
 
-		std::vector<wav_chunk_t> chunks;
-
-		WavFile file = *(WavFile*)&f;
-		file.parseHeader(&header, chunks);
+	WavFile file = *(WavFile*)&f;
+	file.parseHeader(&header, chunks);
 
 //		f = audioFS_.open(path, FILE_READ);
 //		delay(100);
 //	//	WavFile f = *(WavFile*)&file; //--> it's not working if using SPIFFS
 //
 //		f.read((uint8_t *)&header, sizeof(header));
-
 
 
 //	wav_chunk_t chunk;
@@ -147,10 +145,18 @@ void AudioPlayer::runAsync(void* data) {
 	audioRenderer_->renderer_stop();
 //	audioRenderer_->renderer_destroy();
 
+	if (stoppedCallback_) {
+		stoppedCallback_();
+	}
+
 	vTaskDelete(NULL);
 }
 
 void AudioPlayer::stop() {
+	if (stoppedCallback_) {
+		stoppedCallback_();
+	}
+	
 	if (audioRenderer_ != NULL) {
 		audioRenderer_->renderer_stop();
 		audioRenderer_->renderer_destroy();
